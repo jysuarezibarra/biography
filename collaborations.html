@@ -11,6 +11,42 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		
+		<!-- Leaflet CSS -->
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+		
+		<style>
+			#collaborationMap {
+				height: 500px;
+				width: 100%;
+				border-radius: 10px;
+				margin: 20px 0;
+				border: 2px solid #e9ecef;
+			}
+			
+			.map-legend {
+				background: white;
+				padding: 20px;
+				border-radius: 8px;
+				margin-top: 20px;
+				border: 1px solid #e9ecef;
+			}
+			
+			.map-legend h4 {
+				color: #2c3e50;
+				margin-bottom: 15px;
+				border-bottom: 2px solid #3498db;
+				padding-bottom: 8px;
+			}
+			
+			.legend-color {
+				display: inline-block;
+				width: 12px;
+				height: 12px;
+				border-radius: 50%;
+				margin-right: 8px;
+			}
+		</style>
 	</head>
 	<body class="is-preload">
 
@@ -53,6 +89,22 @@
 								<!-- Introduction -->
 								<h2>Collaborative Network</h2>
 								<p>Throughout my academic career, I have established strong collaborative relationships with researchers from various institutions worldwide. These partnerships have been essential for advancing our understanding of paleoceanographic processes and foraminiferal research.</p>
+
+								<!-- Interactive World Map -->
+								<h2>Global Collaboration Network</h2>
+								<div id="collaborationMap"></div>
+								
+								<div class="map-legend">
+									<h4>Collaboration Hubs:</h4>
+									<ul class="alt">
+										<li><span class="legend-color" style="background: #e74c3c;"></span> <strong>Marseille, France:</strong> CEREGE - Current Postdoctoral Research</li>
+										<li><span class="legend-color" style="background: #3498db;"></span> <strong>Porto Alegre, Brazil:</strong> UFRGS - Paleoceanography Collaboration</li>
+										<li><span class="legend-color" style="background: #2ecc71;"></span> <strong>Recife, Brazil:</strong> UFPE - Foraminiferal Bioerosion Studies</li>
+										<li><span class="legend-color" style="background: #f39c12;"></span> <strong>São Paulo, Brazil:</strong> USP - Marine Biogeochemistry Research</li>
+										<li><span class="legend-color" style="background: #9b59b6;"></span> <strong>Prague, Czech Republic:</strong> Charles University - PhD Institution</li>
+										<li><span class="legend-color" style="background: #1abc9c;"></span> <strong>Bucaramanga, Colombia:</strong> Industrial University of Santander - BSc Institution</li>
+									</ul>
+								</div>
 
 								<hr />
 
@@ -201,6 +253,82 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			
+			<!-- Leaflet JavaScript -->
+			<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+			
+			<!-- Map Script -->
+			<script>
+				// Initialize the map
+				var map = L.map('collaborationMap').setView([20, 0], 2);
+				
+				// Add OpenStreetMap tiles
+				L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+					attribution: '© OpenStreetMap contributors'
+				}).addTo(map);
+				
+				// Collaboration locations with coordinates
+				var collaborations = [
+					{
+						lat: 43.2965,
+						lon: 5.3698,
+						title: "CEREGE",
+						description: "Marseille, France - Current Postdoctoral Research",
+						color: "#e74c3c"
+					},
+					{
+						lat: -30.0331,
+						lon: -51.2300,
+						title: "UFRGS",
+						description: "Porto Alegre, Brazil - Paleoceanography Collaboration",
+						color: "#3498db"
+					},
+					{
+						lat: -8.0476,
+						lon: -34.8770,
+						title: "UFPE", 
+						description: "Recife, Brazil - Foraminiferal Bioerosion Studies",
+						color: "#2ecc71"
+					},
+					{
+						lat: -23.5505,
+						lon: -46.6333,
+						title: "USP",
+						description: "São Paulo, Brazil - Marine Biogeochemistry Research",
+						color: "#f39c12"
+					},
+					{
+						lat: 50.0755,
+						lon: 14.4378,
+						title: "Charles University",
+						description: "Prague, Czech Republic - PhD Institution",
+						color: "#9b59b6"
+					},
+					{
+						lat: 7.1193,
+						lon: -73.1227,
+						title: "Industrial University of Santander",
+						description: "Bucaramanga, Colombia - BSc Institution",
+						color: "#1abc9c"
+					}
+				];
+				
+				// Add markers for each collaboration
+				collaborations.forEach(function(collab) {
+					var marker = L.circleMarker([collab.lat, collab.lon], {
+						color: collab.color,
+						fillColor: collab.color,
+						fillOpacity: 0.8,
+						radius: 8,
+						weight: 2
+					}).addTo(map);
+					
+					marker.bindPopup(`
+						<strong>${collab.title}</strong><br>
+						${collab.description}
+					`);
+				});
+			</script>
 
 	</body>
 </html>
